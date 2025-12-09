@@ -1,4 +1,4 @@
-# Readme
+# Instalar Odoo en Dokku
 
 ## Configurar
 
@@ -24,7 +24,6 @@ Ejecutar script.
     git clone https://github.com/odoo/docker.git
     cp -r docker/19.0/* ./
     rm -fr docker
-    mv odoo.conf ./config/odoo.conf
 
     git remote add dokku dokku@{DOKKU_HOST}:{DOKKU_APP_NAME}
     git push dokku master
