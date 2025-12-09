@@ -28,3 +28,9 @@ Ejecutar script.
     git remote add dokku dokku@{DOKKU_HOST}:{DOKKU_APP_NAME}
     git push dokku master
 
+## Instalar Let's Encrypt
+
+    dokku config:set --no-restart $APPNAME DOKKU_LETSENCRYPT_EMAIL=$EMAIL
+    dokku letsencrypt $APPNAME $DOMAIN
+
+

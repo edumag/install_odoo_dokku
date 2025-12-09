@@ -8,9 +8,7 @@ fi
 
 if [[ "$ACTION" == "remove" ]]; then
   dokku apps:destroy $APPNAME
-  if [[ -z "$PGNAME" ]]; then
-    dokku postgres:destroy $PGNAME
-  fi
+  dokku postgres:destroy $PGNAME
   exit
 fi
 
@@ -107,15 +105,10 @@ dokku storage:report $APPNAME
 #  TARGET_UID=32767 \
 dokku config:set $APPNAME \
   ODOO_ADMIN_PASSWD=$MASTERPASSWORD\
-  DB_PORT_5432_TCP_ADDR=$PGNAME \
+  DB_PORT_5432_TCP_ADDR=$DB_PORT_5432_TCP_ADDR \
   DB_PORT_5432_TCP_PORT=$DB_PORT_5432_TCP_PORT \
   DB_ENV_POSTGRES_USER=$POSTGRES_USER \
   DB_ENV_POSTGRES_PASSWORD=$PGPASSWORD \
   ODOO_addons_path=/mnt/extra-addons,/opt/odoo/sources/odoo/addons \
   DOKKU_DOCKERFILE_START_CMD="odoo"
-
-# dokku git:from-image $APPNAME odoo:$VERSION
-
-dokku config:set --no-restart $APPNAME DOKKU_LETSENCRYPT_EMAIL=$EMAIL
-dokku letsencrypt $APPNAME $DOMAIN
 
