@@ -102,13 +102,13 @@ dokku storage:mount $APPNAME /var/lib/dokku/data/storage/$APPNAME/addons:/mnt/ex
 dokku storage:mount $APPNAME /var/lib/dokku/data/storage/$APPNAME/odoo-web-data:/var/lib/odoo
 dokku storage:report $APPNAME
 
-dokku proxy:ports-set $APPNAME http:80:8069
+# dokku proxy:ports-set $APPNAME http:80:8069
 
 #  TARGET_UID=32767 \
 dokku config:set $APPNAME \
   ODOO_ADMIN_PASSWD=$MASTERPASSWORD\
   DB_PORT_5432_TCP_ADDR=$PGNAME \
-  DB_PORT_5432_TCP_PORT=5432 \
+  DB_PORT_5432_TCP_PORT=$DB_PORT_5432_TCP_PORT \
   DB_ENV_POSTGRES_USER=$POSTGRES_USER \
   DB_ENV_POSTGRES_PASSWORD=$PGPASSWORD \
   ODOO_addons_path=/mnt/extra-addons,/opt/odoo/sources/odoo/addons \
