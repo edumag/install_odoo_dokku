@@ -98,7 +98,7 @@ cd -
 
 # chown -R 101:101 $APPNAME
 dokku storage:mount $APPNAME /var/lib/dokku/data/storage/$APPNAME/addons:/mnt/extra-addons
-dokku storage:mount $APPNAME /var/lib/dokku/data/storage/$APPNAME/config:/etc/odoo
+# dokku storage:mount $APPNAME /var/lib/dokku/data/storage/$APPNAME/config:/etc/odoo
 dokku storage:mount $APPNAME /var/lib/dokku/data/storage/$APPNAME/odoo-web-data:/var/lib/odoo
 dokku storage:report $APPNAME
 
