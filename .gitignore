@@ -1,7 +1,3 @@
 *.swp
 .env
-Dockerfile
-entrypoint.sh
-odoo.conf
-wait-for-psql.py
 docker/
