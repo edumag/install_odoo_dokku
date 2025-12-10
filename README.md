@@ -33,4 +33,8 @@ Ejecutar script.
     dokku config:set --no-restart $APPNAME DOKKU_LETSENCRYPT_EMAIL=$EMAIL
     dokku letsencrypt $APPNAME $DOMAIN
 
+## Eliminar aplicación en dokku
+
+    ./install_odoo_dokku.sh remove
+
 
