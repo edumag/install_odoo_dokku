@@ -100,7 +100,10 @@ dokku storage:mount $APPNAME /var/lib/dokku/data/storage/$APPNAME/addons:/mnt/ex
 dokku storage:mount $APPNAME /var/lib/dokku/data/storage/$APPNAME/odoo-web-data:/var/lib/odoo
 dokku storage:report $APPNAME
 
-# dokku proxy:ports-set $APPNAME http:80:8069
+### Maperar puertos
+
+dokku proxy:ports-set $APPNAME https:443:8069
+dokku proxy:ports-set $APPNAME http:80:8069
 
 #  TARGET_UID=32767 \
 dokku config:set $APPNAME \

@@ -1,5 +1,7 @@
 # Instalar Odoo 18.0 en Dokku
 
+![odoo18-01.png](./img/odoo18-01.png){width="100%" height="auto"}
+
 ## Configurar
 
 Copiar el archivo `.env-example` a `.env`
@@ -34,26 +36,53 @@ Ejecutar script.
     dokku config:set --no-restart $APPNAME DOKKU_LETSENCRYPT_EMAIL=$EMAIL
     dokku letsencrypt $APPNAME $DOMAIN
 
-## Varios
+## Instalar addons
 
-### Eliminar aplicación en dokku
-
-    ./install_odoo_dokku.sh remove
-
-### Instalar addons
-
-#### l10n_es_aeat y l10n_es_aeat_mod303
+### l10n_es_aeat y l10n_es_aeat_mod303
 
     git clone https://github.com/OCA/l10n-spain.git
     cp -r l10n-spain/l10n_es_aeat_mod303 ./addons/
     cp -r l10n-spain/l10n_es_aeat ./addons/
     rm -fr l10n-spain
 
-#### account_tax_balance
-
-#### date_range y account_tax_balance
+### date_range y account_tax_balance
 
 Se pueden bajar desde https://odoo-community.org/shop
+
+### Subir módulos al servidor
+
+    scp -r addons/* {DOKKU_USER}@{DOKKU_HOST}:/var/lib/dokku/data/storage/$APPNAME/addons/
+
+### Reiniciar aplicación
+
+    dokku ps:restart $APPNAME
+
+## Post instalación
+
+Al entrar por primera vez nos pedirá que configuremos la base de datos.
+
+### Activar modo desarrollador
+
+Ir a configuraciones -> Herramientas de desarrollo -> Modo desarrollador.
+
+### Activar módulos
+
+Ir a Aplicaciones.
+
+En modo desarrollador tendremos la opción de actualizar la lista de módulos y podremos activarlos.
+
+
+## Varios
+
+### Eliminar aplicación en dokku
+
+    ./install_odoo_dokku.sh remove
+
+### Gestionar base de datos.
+
+Desde https://{DOMINIO}/web/database/manager podremos Crear, restaurar, hacer
+un backup o cambiar contraseña maestra.
+
 
 ### Repositorio OCA
 
