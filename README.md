@@ -4,6 +4,11 @@
 
 Proceso de instalación de odoo en servidor vps con dokku.
 
+## Bajar instalador
+
+wget https://github.com/edumag/install_odoo_dokku/archive/refs/heads/master.zip
+unzip master.zip
+cd install_odoo_dokku-master
 
 ## Configurar
 
