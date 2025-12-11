@@ -2,6 +2,9 @@
 
 ![odoo18-01.png](./img/odoo18-01.png){width="100%" height="auto"}
 
+Proceso de instalación de odoo en servidor vps con dokku.
+
+
 ## Configurar
 
 Copiar el archivo `.env-example` a `.env`
