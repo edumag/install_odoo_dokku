@@ -40,9 +40,13 @@ Ejecutar script.
 
 ## Instalar Let's Encrypt
 
-    source .env
-    dokku config:set --no-restart $APPNAME DOKKU_LETSENCRYPT_EMAIL=$EMAIL
-    dokku letsencrypt $APPNAME $DOMAIN
+```
+source .env
+dokku letsencrypt:set $APPNAME email $EMAIL
+dokku letsencrypt:enable $APPNAME
+dokku letsencrypt:auto-renew
+dokku letsencrypt:cron-job --add
+```
 
 ## Instalar addons
 

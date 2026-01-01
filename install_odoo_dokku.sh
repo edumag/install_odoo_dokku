@@ -2,6 +2,9 @@
 
 source .env
 
+# Solo si no está instalado ya.
+sudo dokku plugin:install https://github.com/dokku/dokku-postgres.git postgres
+
 if [[ $1 == "remove" ]]; then # If no variable.
   ACTION=$1
 fi
@@ -56,9 +59,6 @@ read -p "Press enter to continue"
 dokku apps:create $APPNAME
 dokku domains:add $APPNAME $DOMAIN
 
-# Solo si no está instalado ya.
-# sudo dokku plugin:install https://github.com/dokku/dokku-postgres.git postgres
-
 dokku postgres:create $PGNAME
 dokku postgres:link $PGNAME $APPNAME
 
@@ -68,7 +68,8 @@ echo "
 " | dokku postgres:connect $PGNAME
 
 cd /var/lib/dokku/data/storage/
-mkdir -p {$APPNAME/odoo-web-data,$APPNAME/config,$APPNAME/addons}
+sudo mkdir -p {$APPNAME/odoo-web-data,$APPNAME/config,$APPNAME/addons}
+sudo chown -R dokku:dokku {$APPNAME/odoo-web-data,$APPNAME/config,$APPNAME/addons}
 cd -
 
 
@@ -102,8 +103,9 @@ dokku storage:report $APPNAME
 
 ### Maperar puertos
 
-dokku proxy:ports-set $APPNAME https:443:8069
-dokku proxy:ports-set $APPNAME http:80:8069
+dokku ports:add $APPNAME http:80:8069
+dokku ports:add $APPNAME https:443:8069
+
 
 #  TARGET_UID=32767 \
 dokku config:set $APPNAME \
