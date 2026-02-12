@@ -21,7 +21,8 @@ Adaptar las variables de entorno.
 Subir a servidor el fichero .env y el script install_odoo_dokku.sh
 
     source .env
-    scp .env install_odoo_dokku.sh $DOKKU_HOST:~/install_odoo_dokku/
+    ssh $DOKKU_HOST mkdir ~/install_odoo_dokku
+    scp .env scripts/install_odoo_dokku.sh $DOKKU_HOST:~/install_odoo_dokku/
 
 
 ## En servidor
@@ -101,7 +102,7 @@ Se pueden bajar desde https://odoo-community.org/shop
 
 #### Subir módulos al servidor
 
-    scp -r addons/* ${DOKKU_HOST}:/var/lib/dokku/data/storage/$APPNAME/addons/
+    scp -r odoo/addons/* ${DOKKU_HOST}:/var/lib/dokku/data/storage/$APPNAME/addons/
 
 ## En servidor
 
@@ -125,6 +126,7 @@ En modo desarrollador tendremos la opción de actualizar la lista de módulos y 
 
 Desde el servidor:
 
+    cd install_odoo_dokku
     ./install_odoo_dokku.sh remove
 
 ### Repositorio OCA
