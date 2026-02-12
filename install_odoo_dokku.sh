@@ -61,6 +61,7 @@ dokku domains:add $APPNAME $DOMAIN
 
 dokku postgres:create $PGNAME
 dokku postgres:link $PGNAME $APPNAME
+dokku letsencrypt:set $APPNAME email $EMAIL
 
 echo "
   CREATE user odoo WITH password '$PGPASSWORD';
@@ -69,31 +70,8 @@ echo "
 
 cd /var/lib/dokku/data/storage/
 sudo mkdir -p {$APPNAME/odoo-web-data,$APPNAME/config,$APPNAME/addons}
-sudo chown -R dokku:dokku {$APPNAME/odoo-web-data,$APPNAME/config,$APPNAME/addons}
+sudo chown -R 100:100 {$APPNAME/odoo-web-data,$APPNAME/config,$APPNAME/addons}
 cd -
-
-
-# echo '#!/bin/bash
-# echo $0
-# pip3 install codicefiscale
-# pip3 install phonenumbers2
-# echo "Install wkhtmltox..."
-# apt -y install wget
-# wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
-# apt -y install ./wkhtmltox_0.12.6-1.focal_amd64.deb
-# ' > $APPNAME/scripts/startup.sh
-
-# chmod +x $APPNAME/scripts/startup.sh
-
-# echo '# list the OCA project dependencies, one per line
-# # add a github url if you need a forked version
-# # url is not required for OCA projects
-# # project https://github.com/OCA/project.git $VERSION
-# # project $VERSION
-# # account-payment $VERSION
-# # hr $VERSION
-# # l10n-spain $VERSION
-# ' >> $APPNAME/addons/oca_dependencies.txt
 
 # chown -R 101:101 $APPNAME
 dokku storage:mount $APPNAME /var/lib/dokku/data/storage/$APPNAME/addons:/mnt/extra-addons
@@ -116,4 +94,17 @@ dokku config:set $APPNAME \
   DB_ENV_POSTGRES_PASSWORD=$PGPASSWORD \
   ODOO_addons_path=/mnt/extra-addons,/opt/odoo/sources/odoo/addons \
   DOKKU_DOCKERFILE_START_CMD="odoo"
+
+dokku nginx:set $APPNAME client-max-body-size 50m
+dokku nginx:set $APPNAME client-body-timeout 200s
+dokku nginx:show-config $APPNAME
+
+echo
+echo Instalación realizada.
+echo
+echo Una vez realizado el primer deploy, puede actviar letsencrypt con:
+echo dokku letsencrypt:enable $APPNAME
+echo
+echo Para ver los logs de la aplicación:
+echo dokku logs $APPNAME
 

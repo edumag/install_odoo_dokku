@@ -35,6 +35,12 @@ Ejecutar script.
     cp -r docker/18.0/* ./
     rm -fr docker
 
+Definir puerto de la aplicación en odoo.conf:
+
+    db_port = 5432
+
+Deploy
+
     git remote add dokku dokku@{DOKKU_HOST}:{DOKKU_APP_NAME}
     git push dokku master
 
@@ -44,8 +50,6 @@ Ejecutar script.
 source .env
 dokku letsencrypt:set $APPNAME email $EMAIL
 dokku letsencrypt:enable $APPNAME
-dokku letsencrypt:auto-renew
-dokku letsencrypt:cron-job --add
 ```
 
 ## Instalar addons
@@ -69,10 +73,6 @@ Se pueden bajar desde https://odoo-community.org/shop
 
     dokku ps:restart $APPNAME
 
-## Post instalación
-
-Al entrar por primera vez nos pedirá que configuremos la base de datos.
-
 ### Activar modo desarrollador
 
 Ir a configuraciones -> Herramientas de desarrollo -> Modo desarrollador.
@@ -83,19 +83,23 @@ Ir a Aplicaciones.
 
 En modo desarrollador tendremos la opción de actualizar la lista de módulos y podremos activarlos.
 
-
 ## Varios
 
 ### Eliminar aplicación en dokku
 
     ./install_odoo_dokku.sh remove
 
-### Gestionar base de datos.
-
-Desde https://{DOMINIO}/web/database/manager podremos Crear, restaurar, hacer
-un backup o cambiar contraseña maestra.
-
-
 ### Repositorio OCA
 
     https://github.com/OCA
+
+## Post instalación
+
+Al entrar por primera vez nos pedirá que configuremos la base de datos.
+
+### Gestionar base de datos.
+
+Desde https://${DOMINIO}/web/database/manager podremos Crear, restaurar, hacer
+un backup o cambiar contraseña maestra.
+
+

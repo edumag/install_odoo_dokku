@@ -1,4 +1,4 @@
 *.swp
 .env
 docker/
-l10n-spain/
+ModuleRepositories
