@@ -34,15 +34,16 @@ Ejecutar script.
 ## En local
 
     git clone https://github.com/odoo/docker.git
-    cp -r docker/18.0/* ./
+    cp -r docker/18.0/* ./odoo/
     rm -fr docker
 
-Definir puerto de la aplicación en odoo.conf:
+Definir puerto de la aplicación en odoo/odoo.conf:
 
     db_port = 5432
 
 ### Deploy
 
+    cd odoo
     git remote add dokku dokku@${DOKKU_HOST}:${APPNAME}
     git push dokku master
 
@@ -62,18 +63,45 @@ dokku letsencrypt:enable $APPNAME
 
 #### l10n_es_aeat y l10n_es_aeat_mod303
 
-    git clone https://github.com/OCA/l10n-spain.git
-    cp -r l10n-spain/l10n_es_aeat_mod303 ./addons/
-    cp -r l10n-spain/l10n_es_aeat ./addons/
-    rm -fr l10n-spain
+Nos permite generar el modelo 303 que se debe enviar para la declaración del IVA trimestral.
 
-#### date_range y account_tax_balance
+    cd ModuleRepositories
+    git clone https://github.com/OCA/l10n-spain.git
+
+    # Rama 18.0
+    cd l10n-spain ; git checkout 18.0 ; cd -
+    cd l10n-spain/l10n_es_aeat ; git checkout 18.0 ; cd -
+    cd l10n-spain/l10n_es_aeat_mod303 ; git checkout 18.0 ; cd -
+
+    cp -r l10n-spain ../odoo/addons/
+    cp -r l10n-spain/l10n_es_aeat_mod303 ../odoo/addons/
+    cp -r l10n-spain/l10n_es_aeat ../odoo/addons/
+
+#### account_tax_balance
+
+    cd ModuleRepositories
+    git clone https://github.com/edumag/account_tax_balance.gitgit clone https://github.com/OCA/account-financial-reporting.git
+    cd account-financial-reporting
+    git checkout 18.0
+    cd ..
+    cp -r account-financial-reporting/account_tax_balance ../odoo/addons/
+
+#### date_range
+
+    cd ModuleRepositories
+    git clone https://github.com/OCA/server-ux.git
+    cd server-ux
+    git checkout 18.0
+    cd ..
+    cp -r server-ux/date_range ../odoo/addons/
+
+#### Otros módulos
 
 Se pueden bajar desde https://odoo-community.org/shop
 
 #### Subir módulos al servidor
 
-    scp -r addons/* {DOKKU_USER}@{DOKKU_HOST}:/var/lib/dokku/data/storage/$APPNAME/addons/
+    scp -r addons/* ${DOKKU_HOST}:/var/lib/dokku/data/storage/$APPNAME/addons/
 
 ## En servidor
 
@@ -94,6 +122,8 @@ En modo desarrollador tendremos la opción de actualizar la lista de módulos y 
 ## Varios
 
 ### Eliminar aplicación en dokku
+
+Desde el servidor:
 
     ./install_odoo_dokku.sh remove
 
