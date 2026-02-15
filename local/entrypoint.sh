@@ -1,1 +1,0 @@
-../odoo/entrypoint.sh

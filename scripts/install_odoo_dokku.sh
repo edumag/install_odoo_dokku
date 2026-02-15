@@ -1,5 +1,32 @@
 #!/bin/bash
 
+show_help() {
+    cat << EOF
+Uso: $(basename "$0") [remove]
+
+Instala Odoo con Dokku y PostgreSQL.
+
+Opciones:
+    remove         Elimina la aplicación y la base de datos
+    -h, --help     Muestra esta ayuda
+
+Requisitos:
+    - Archivo .env con las variables:
+      APPNAME, PGNAME, MASTERPASSWORD, PGPASSWORD
+      EMAIL, DOMAIN, VERSION
+
+Descripción:
+    Configura una aplicación Odoo completa con PostgreSQL,
+    almacenamiento persistente y configuración de nginx.
+
+EOF
+}
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+    show_help
+    exit 0
+fi
+
 source .env
 
 # Solo si no está instalado ya.
