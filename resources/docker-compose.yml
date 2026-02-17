@@ -1,0 +1,44 @@
+services:
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - mydb
+    ports:
+        - "${LOCAL_PORT:-8069}:8069"
+    environment:
+      - DB_ENV_POSTGRES_USER=${POSTGRES_USER:-odoo}
+      - DB_ENV_POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-myodoo}
+      - DB_PORT_5432_TCP_PORT=${DB_PORT_5432_TCP_PORT:-5432}
+      - DB_PORT_5432_TCP_ADDR=mydb
+      - PASSWORD=${PASSWORD:-myodoo}
+      - HOST=mydb
+      - USER=${POSTGRES_USER:-odoo}
+    volumes:
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+      - ./odoo-web-data:/var/lib/odoo
+    networks:
+      - odoo_network
+
+  mydb:
+    image: postgres:18
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-myodoo}
+      - POSTGRES_USER=${POSTGRES_USER:-odoo}
+      - PGDATA=/var/lib/postgresql/data/pgdata # Añade esta subruta
+    ports:
+      - "${DB_PORT_5432_TCP_PORT:-5432}:${DB_PORT_5432_TCP_PORT:-5432}"
+    volumes:
+      - ./odoo-db-data:/var/lib/postgresql/data
+    networks:
+      - odoo_network
+
+volumes:
+  odoo-db-data:
+
+networks:
+  odoo_network:
+    name: odoo_network
+    external: true
