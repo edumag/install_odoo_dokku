@@ -2,9 +2,12 @@
 
 show_help() {
     cat << EOF
-Uso: $(basename "$0")
+Uso: $(basename "$0") <NameDatabase>
 
 Inicializa la base de datos local de Odoo con el módulo base.
+
+Parametros:
+    NameDatabase   Nombre de la base de datos
 
 Opciones:
     -h, --help     Muestra esta ayuda
@@ -20,11 +23,13 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
     exit 0
 fi
 
+NameDatabase=$1
+
 PWD=$(pwd)
 # Recoger directorio del script
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 echo $SCRIPT_DIR
 . ${SCRIPT_DIR}/../odoo/.env
 cd $SCRIPT_DIR/../odoo
-docker compose run web /usr/bin/python3 /usr/bin/odoo --db_host mydb --db_port $DB_PORT_5432_TCP_PORT --db_user $POSTGRES_USER --db_password $PGPASSWORD -i base -d $POSTGRES_DB --stop-after-init
+docker compose run web /usr/bin/python3 /usr/bin/odoo --db_host mydb --db_port $DB_PORT_5432_TCP_PORT --db_user $POSTGRES_USER --db_password $PGPASSWORD -i base -d $NameDatabase --stop-after-init
 cd $PWD
